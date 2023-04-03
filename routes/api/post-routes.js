@@ -1,13 +1,12 @@
 const router = require('express').Router();
-const { BlogPost, User } = require('../../models');
+const { BlogPost } = require('../../models');
 
 // Get all blog posts and include the user information
 router.get('/', async (req, res) => {
   try {
     const postData = await BlogPost.findAll({
       include: {
-        model: User,
-        attributes: ['username']
+        attributes: ['title', 'content']
       }
     });
 
@@ -21,13 +20,12 @@ router.get('/:id', async (req, res) => {
   try {
     const postData = await BlogPost.findByPk(req.params.id, {
       include: {
-        model: User,
-        attributes: ['username']
+        attributes: ['title', 'content']
       }
     });
 
     if (!postData) {
-      res.status(404).json({ message: 'No blog post found with this ID' });
+      res.status(404).json({ message: 'No blog post found.' });
       return;
     }
 
